@@ -8,25 +8,35 @@ var prediction = "http://webservices.nextbus.com/service/publicXMLFeed?command=p
 var json = {};
 
 
-$.get(ttc, prediction, function(xml){
+$.get(ttc, function(xml){
   json = $.xml2json(xml);
   $('#route').html((json.route.title));
-
-
   // stores names of stops
   var stops = json.route.stop
   // iterates over each stop and collects stopId
   stops.forEach(function(stop, index){
     $('#myTransit').append("<option value='" + stop.stopId + "'>" + stop.title + "</option>");
+    $('#myTransit').prop("selectedIndex", -1);
+  });
+});
 
-  // use stopId that user selected to show predicted times  
-  $('myTransit').val(function(value) {
-    
 
+
+  // use selected stopId to show predicted times  
+  $('#myTransit').on('change', function(){
+    console.log(prediction + this.value);
+
+    var stop_data = prediction + this.value
+    $.get(stop_data, function(xml){
+      json = $.xml2json(xml);
+
+
+    });
   });
 
-});
-});
+
+
+
 
 
 
