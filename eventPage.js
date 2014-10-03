@@ -1,3 +1,20 @@
+var ttc = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=32"
+var ttc = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=32"
+
+function get_station(station_number) {
+  return "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=" + station_number
+}
+
+var json = {};
+
+
+
+$.get(ttc, function(xml){
+  json = $.xml2json(xml);
+});
+
+
+
 
 
 
