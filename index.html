@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>Bad Ass Public Transit || Civilized public commuting</title>
+  <title>Bad Ass Public Transit || Civilized public commuting</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="jquery.xml2json.js"></script>
   <script src="eventPage.js"></script>
@@ -11,10 +11,11 @@
   <div id="body">
     <div id="title">
       <h2>Track your transit</h2>
+      <p id="route"></p>
     </div>
     <form action="transit-selection">
       <legend>Select Route</legend>
-      <p>
+      <p id="route">
         <label for="list-items">Your Options</label>
         <select name="transit" id="myTransit">
           <option value="1">one</option>
@@ -22,16 +23,15 @@
           <option value="3">three</option>
           <option value="4">four</option>
         </select>
-      </p>
-    </form>
+      </form>
 
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
+      <style>
+        body {
+          min-width: 357px;
+          overflow-x: hidden;
+        }
 
-    </style>
-  </body>
-  </html>
+      </style>
+    </body>
+    </html>
 
