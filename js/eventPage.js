@@ -1,5 +1,5 @@
 var ttc = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=32"
-var prediction = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
+var whatsComing = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
 // function not being called yet
 // function get_station(station_number) {
 //   return "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=" + station_number
@@ -23,14 +23,18 @@ $.get(ttc, function(xml){
 
 
   // use selected stopId to show predicted times  
-  $('#myTransit').on('change', function(){
-    console.log(prediction + this.value);
+  $(document).ready(function(){
+    $('#myTransit').on('change', function(){      
+      var stop_data = (whatsComing + this.value)
+      console.log(stop_data)
+      $.get(stop_data, function(xml){
+        json = $.xml2json(xml);
+        console.log(json.predictions[1].direction);
+        
+        // console.log(json.predictions[1].direction.prediction[0].epochTime)
+        $('#upcoming').text(json.predictions[1].direction);
 
-    var stop_data = prediction + this.value
-    $.get(stop_data, function(xml){
-      json = $.xml2json(xml);
-
-
+      });
     });
   });
 
