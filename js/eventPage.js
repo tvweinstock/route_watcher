@@ -16,7 +16,9 @@ $.get(ttc, function(xml){
   
   var stops = json.route.stop
   stops.forEach(function(stop, index){
-    console.log("Stop #" + index + ": " + stop.title);
+    // console.log("Stop #" + index + ": " + stop.title);
+    (stop.title).add($("<li></li>"));
+
   });
     
 });
