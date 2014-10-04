@@ -29,8 +29,10 @@ $.get(ttc, function(xml){
       console.log(stop_data)
       $.get(stop_data, function(xml){
         json = $.xml2json(xml);
-        console.log(json.predictions[1].direction);
         
+        var thisRoute = json.predictions.slice(1)
+        
+
         // console.log(json.predictions[1].direction.prediction[0].epochTime)
         $('#upcoming').text(json.predictions[1].direction);
 
