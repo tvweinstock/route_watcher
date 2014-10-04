@@ -30,11 +30,12 @@ $.get(ttc, function(xml){
       $.get(stop_data, function(xml){
         json = $.xml2json(xml);
         
-        var thisRoute = json.predictions.slice(1)
-        
-
-        // console.log(json.predictions[1].direction.prediction[0].epochTime)
-        $('#upcoming').text(json.predictions[1].direction);
+        var thisRoute = json.predictions[1].direction.prediction;
+        thisRoute.forEach(function(coming){
+          console.log(coming.epochTime)
+          $("#upcoming").append('<li>' + coming.epochTime + '</li>');
+          $("#yourTimes").html('Your upcoming times');
+        });
 
       });
     });

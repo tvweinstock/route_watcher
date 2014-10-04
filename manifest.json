@@ -8,13 +8,13 @@
     "default_icon": "train.png",
     "default_popup": "index.html"
     },
-    "content_scripts": [ {
-      "js": [ "js/lib/jquery-1.9.1.min.js", "js/eventPage.js" ],
-      "run_at" : "document_start"
-      } ],
+    // "content_scripts": [ {
+    //   "js": [ "jquery.min.js", "js/eventPage.js" ],
+    //   "run_at" : "document_start"
+    //   } ],
 
       "background": {
-        "scripts": ["eventPage.js"],
+        "scripts": ["js/eventPage.js"],
         "persistent": true
         },
 
