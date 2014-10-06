@@ -1,12 +1,16 @@
 var ttc = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=32"
 var whatsComing = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
+var routeTag = "&routeTag=32"
 // function not being called yet
-// function get_station(station_number) {
-//   return "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=" + station_number
-// }
+// function get_stop(stop_id) {
+//   return "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId=" + stop_id + "&routeTag=32"
+// };
+
+
+// this url gets specific for the stop id and the routeTag
+// "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=<agency_tag>&stopId=<stop id>&routeTag=<route tag>"
 
 var json = {};
-
 
 $.get(ttc, function(xml){
   json = $.xml2json(xml);
@@ -20,28 +24,53 @@ $.get(ttc, function(xml){
   });
 });
 
+var x = 433276000
+var d = moment.duration(x, 'seconds');
+var hours = Math.floor(d.asHours());
+var mins = Math.floor(d.asMinutes()) - hours * 60;
+console.log("hours:" + hours + " mins:" + mins);
 
+$(document).ready(function(){
+  $('#myTransit').on('change', function(){      
+    var stop_data = (whatsComing + this.value + routeTag)
+    console.log(stop_data)
+    $.get(stop_data, function(xml){
+      json = $.xml2json(xml);
 
-  // use selected stopId to show predicted times  
-  $(document).ready(function(){
-    $('#myTransit').on('change', function(){      
-      var stop_data = (whatsComing + this.value)
-      console.log(stop_data)
-      $.get(stop_data, function(xml){
-        json = $.xml2json(xml);
+      var thisRoute = json.predictions.direction.prediction;
+      thisRoute.forEach(function(coming){
+        var predTime = coming.seconds;
+        console.log(predTime)
+        var betterTime = moment.duration(predTime, 'seconds');
+        var hours = Math.floor(betterTime.asHours());
+        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+        console.log("hours:" + hours + " mins:" + mins);
         
-        var thisRoute = json.predictions[1].direction.prediction;
-        thisRoute.forEach(function(coming){
-          console.log(coming.epochTime)
-          $("#upcoming").append('<li>' + coming.epochTime + '</li>');
-          $("#yourTimes").html('Your upcoming times');
-        });
 
-      });
+        $("#upcoming").append('<li>' + predTime + '</li>');
+        $("#yourTimes").html('Your upcoming times');
+
+    });
+
+
     });
   });
 
+});
 
+
+
+
+
+
+
+
+
+
+// TODO   
+// convert predicted times to look good
+// if a user picks a new bus remove the previous predicted times
+// var time = new Date(epochTime)
 
 
 
