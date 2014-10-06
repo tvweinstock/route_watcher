@@ -13,12 +13,15 @@
     //   "run_at" : "document_start"
     //   } ],
 
-      "background": {
-        "scripts": ["js/eventPage.js"],
-        "persistent": true
-        },
+    "background": {
+      "scripts": ["js/eventPage.js","js/background.js"],
+      "persistent": true
+      },
 
-        "permissions": [
-        "tabs"
-        ]
-      }
+      "options_page": "options.html",
+
+      "permissions": [
+      "tabs"
+      // geolocation
+      ]
+    }

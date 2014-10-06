@@ -51,7 +51,17 @@ $(document).ready(function(){
     });
   });
 
+
 });
+
+
+var currentStatus = chrome.extension.getBackgroundPage().open;
+if (currentStatus==0) {
+  chrome.extension.getBackgroundPage().open=1;
+} else {
+  chrome.extension.getBackgroundPage().open=0;
+  window.close();
+};
 
 
 
