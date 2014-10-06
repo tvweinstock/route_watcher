@@ -24,11 +24,6 @@ $.get(ttc, function(xml){
   });
 });
 
-var x = 433276000
-var d = moment.duration(x, 'seconds');
-var hours = Math.floor(d.asHours());
-var mins = Math.floor(d.asMinutes()) - hours * 60;
-console.log("hours:" + hours + " mins:" + mins);
 
 $(document).ready(function(){
   $('#myTransit').on('change', function(){      
@@ -39,25 +34,24 @@ $(document).ready(function(){
 
       var thisRoute = json.predictions.direction.prediction;
       thisRoute.forEach(function(coming){
-        var predTime = coming.seconds;
+        var predTime = parseInt(coming.seconds);
         console.log(predTime)
+
         var betterTime = moment.duration(predTime, 'seconds');
         var hours = Math.floor(betterTime.asHours());
         var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-        console.log("hours:" + hours + " mins:" + mins);
-        
 
-        $("#upcoming").append('<li>' + predTime + '</li>');
+        $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
         $("#yourTimes").html('Your upcoming times');
 
-    });
+
+      });
 
 
     });
   });
 
 });
-
 
 
 
