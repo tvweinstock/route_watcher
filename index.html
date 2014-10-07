@@ -2,11 +2,6 @@
 <html>
 <head>
   <title>Bad Ass Public Transit || Civilized public commuting</title>
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery.xml2json.js"></script>
-  <script src="js/moment.js"></script>
-  <script src="js/eventPage.js"></script>
-  <script src="js/background.js"></script>
 </head>
 <body>
 
@@ -15,33 +10,48 @@
       <h2>Track your transit</h2>
       <p id="route"></p>
     </div>
-    <form action="transit-selection">
-      <legend>Select Route</legend>
-      <p id="route">
 
-        <label for="list-items">Your Stop</label>
-        <select name="transit" id="myTransit">
-        </select>
-      </form>
+    <form action="route-selection">      
+      <label for="direction-names">Your Route</label>
+      <select name="transit" id="myRoute">
+      </select> 
+    </form>
 
-      <h3 id="yourTimes"></h3>
-      <ul id="upcoming"></ul>
-    </div>
+    <form action="direction-selection">
+      <label for="direction-names">Your Direction</label>
+      <select name="transit" id="myDirection">
+      </select> 
+    </form>
+
+    <form action="stop-selection">
+      <label for="stop-names">Your Stop</label>
+      <select name="stops" id="myStop">
+      </select>
+    </form>
+
+    <h3 id="yourTimes"></h3>
+    <ul id="upcoming"></ul>
+  </div>
 
 
 
 
-      <style>
-        body {
-          min-width: 357px;
-          overflow-x: hidden;
-        }
+  <style>
+    body {
+      min-width: 357px;
+      overflow-x: hidden;
+    }
 
-        #upcoming {
-          list-style: none;
-        }
+    #upcoming {
+      list-style: none;
+    }
 
-      </style>
-    </body>
-    </html>
+  </style>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery.xml2json.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/eventPage.js"></script>
+</body>
+</html>
 
