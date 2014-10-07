@@ -66,12 +66,22 @@ $(document).ready(function(){
           var stopIdUrl = (stopBaseUrl + (stopTag.stopId) + "&routeTag=" + (json.route.tag));
           $.get(stopIdUrl, function(xml){
             json = $.xml2json(xml);
-            var predictions
+            var predictions = json.predictions.direction.prediction;
+            predictions.forEach(function(coming){
+              var predTime = parseInt(coming.seconds);
+              console.log(predTime)
+
+              var betterTime = moment.duration(predTime, 'seconds');
+              var hours = Math.floor(betterTime.asHours());
+              var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+
+              $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+              $("#yourTimes").html('Your upcoming times');
+
+            });
           })
         };
       });
-      
-
       
     });
 
