@@ -27,6 +27,8 @@ $(document).ready(function(){
 
   // Manage change of route
   $('#myRoute').on('change', function(){
+    $('#myDirection').html("");
+    $('#myStop').html("");
     var directionsUrl = (directionsBaseUrl + this.value);
     $.get(directionsUrl, function(xml){
       json = $.xml2json(xml);
@@ -35,31 +37,62 @@ $(document).ready(function(){
         $('#myDirection').append("<option value='" + direction.tag + "'>" + direction.title + "</option>");
         $('#myDirection').prop("selectedIndex", -1);
       });
-    
+
     });    
   })  
 
   $('#myDirection').on('change', function(){
-    var stopsForDirection = directionsUrl;
-    $.get(directionsUrl, function(xml){
-      json = $.xml2json(xml);
-      var stops = json
+    $('#myStop').html("");
+    var stops = [];
+    var menuValue = this.value;
+    json.route.direction.forEach(function(direction) {
+      if (direction.tag == menuValue) {
+        direction.stop.forEach(function(stop) {
+          stops.push(stop);
+        });
+      }
+    });
 
-      var thisRoute = json.predictions.direction.prediction;
-      thisRoute.forEach(function(coming){
-        var predTime = parseInt(coming.seconds);
-        console.log(predTime)
+    stops.forEach(function(stop, index){
+      $('#myStop').append("<option value='" + stop.tag + "'>" + stop.tag + "</option>");
+      $('#myStop').prop("selectedIndex", -1);
+    });
 
-        var betterTime = moment.duration(predTime, 'seconds');
-        var hours = Math.floor(betterTime.asHours());
-        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-
-        $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-        $("#yourTimes").html('Your upcoming times');
-
+    $("#myStop").on("change", function(){
+      console.log(this.value);
+      var stopMenuValue = this.value;
+      json.route.stop.forEach(function(stopTag){
+        if (stopTag.tag == stopMenuValue) {
+          var stopIdUrl = (stopBaseUrl + (stopTag.stopId) + "&routeTag=" + (json.route.tag));
+          $.get(stopIdUrl, function(xml){
+            json = $.xml2json(xml);
+            var predictions
+          })
+        };
       });
-    });    
-  })
+      
+
+      
+    });
+
+    return true;
+
+
+    //   var thisRoute = json.predictions.direction.prediction;
+    //   thisRoute.forEach(function(coming){
+    //     var predTime = parseInt(coming.seconds);
+    //     console.log(predTime)
+
+    //     var betterTime = moment.duration(predTime, 'seconds');
+    //     var hours = Math.floor(betterTime.asHours());
+    //     var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+
+    //     $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+    //     $("#yourTimes").html('Your upcoming times');
+
+    //   });
+    // });    
+})
 
   // $.get(ttcNextBus, function(xml){
   //   json = $.xml2json(xml);
@@ -73,32 +106,32 @@ $(document).ready(function(){
   // });
 
 
-  $('#myStop').on('change', function(){      
-    var stop_data = (whatsComing + this.value + routeTag)
-    console.log(stop_data)
-    $.get(stop_data, function(xml){
-      json = $.xml2json(xml);
+// $('#myStop').on('change', function(){      
+//   var stop_data = (whatsComing + this.value + routeTag)
+//   console.log(stop_data)
+//   $.get(stop_data, function(xml){
+//     json = $.xml2json(xml);
 
-      var thisRoute = json.predictions.direction.prediction;
-      thisRoute.forEach(function(coming){
-        var predTime = parseInt(coming.seconds);
-        console.log(predTime)
+//     var thisRoute = json.predictions.direction.prediction;
+//     thisRoute.forEach(function(coming){
+//       var predTime = parseInt(coming.seconds);
+//       console.log(predTime)
 
-        var betterTime = moment.duration(predTime, 'seconds');
-        var hours = Math.floor(betterTime.asHours());
-        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+//       var betterTime = moment.duration(predTime, 'seconds');
+//       var hours = Math.floor(betterTime.asHours());
+//       var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
 
-        $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-        $("#yourTimes").html('Your upcoming times');
+//       $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+//       $("#yourTimes").html('Your upcoming times');
 
-      });
-
-
-    });
-  });
+//     });
 
 
+  // });
 });
+
+
+// });
 
 
 // var currentStatus = chrome.extension.getBackgroundPage().open;
