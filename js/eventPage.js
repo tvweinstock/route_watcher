@@ -1,3 +1,4 @@
+
 var routesBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
 var directionsBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r="
 var stopBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
@@ -51,7 +52,7 @@ var routes,
     });
 
     stops.forEach(function(stop, index){
-      $('#myStop').append("<option value='" + stop.tag + "'>" + stop.tag + "</option>");
+      $('#myStop').append("<option value='" + stop.tag + "'>" + stop.title + "</option>");
       $('#myStop').prop("selectedIndex", -1);
     });
   });
@@ -68,14 +69,14 @@ var routes,
             return;
           } 
           var estimateTime = response.predictions.direction.prediction;
-          debugger
+          
           estimateTime.forEach(function(coming){
             var predTime = parseInt(coming.seconds);
             var betterTime = moment.duration(predTime, 'seconds');
             var hours = Math.floor(betterTime.asHours());
             var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
             $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-            $("#yourTimes").html('Your upcoming times');
+            $("#yourTimes").html('Your upcoming times:');
           });
         })
       };
@@ -91,14 +92,3 @@ return true;
 // convert predicted times to look good
 // if a user picks a new bus remove the previous predicted times
 // var time = new Date(epochTime)
-
-
-
-
-
-
-
-
-
-
-
