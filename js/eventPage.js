@@ -50,7 +50,7 @@ $(document).ready(function(){
         direction.stop.forEach(function(stop) {
           stops.push(stop);
         });
-      }
+      } 
     });
 
     stops.forEach(function(stop, index){
@@ -67,25 +67,22 @@ $(document).ready(function(){
           var stopIdUrl = (stopBaseUrl + (stopTag.stopId) + "&routeTag=" + (json.route.tag));
           $.get(stopIdUrl, function(xml){
             json = $.xml2json(xml);
-
-            var predictions = json.predictions.direction.prediction;
-            console.log(predictions)
-            predictions.forEach(function(coming){
+            if (typeof json.predictions.direction === "undefined") {
+              $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
+            } 
+            var estimateTime = json.predictions.direction.prediction;
+            estimateTime.forEach(function(coming){
               var predTime = parseInt(coming.seconds);
               var betterTime = moment.duration(predTime, 'seconds');
               var hours = Math.floor(betterTime.asHours());
               var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-              if (predictions == 0) {
-                $("#yourTimes").html("Nothing's coming!..now. Please check back soon!!");
-              } else {
-                $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-                $("#yourTimes").html('Your upcoming times');
-              };
+              $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+              $("#yourTimes").html('Your upcoming times');
             });
           })
         };
       });
-      
+
     });
 
 return true;
