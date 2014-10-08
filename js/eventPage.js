@@ -59,6 +59,7 @@ $(document).ready(function(){
     });
 
     $("#myStop").on("change", function(){
+      $("#upcoming").html("");
       console.log(this.value);
       var stopMenuValue = this.value;
       json.route.stop.forEach(function(stopTag){
@@ -66,18 +67,20 @@ $(document).ready(function(){
           var stopIdUrl = (stopBaseUrl + (stopTag.stopId) + "&routeTag=" + (json.route.tag));
           $.get(stopIdUrl, function(xml){
             json = $.xml2json(xml);
+
             var predictions = json.predictions.direction.prediction;
+            console.log(predictions)
             predictions.forEach(function(coming){
               var predTime = parseInt(coming.seconds);
-              console.log(predTime)
-
               var betterTime = moment.duration(predTime, 'seconds');
               var hours = Math.floor(betterTime.asHours());
               var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-
-              $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-              $("#yourTimes").html('Your upcoming times');
-
+              if (predictions == 0) {
+                $("#yourTimes").html("Nothing's coming!..now. Please check back soon!!");
+              } else {
+                $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+                $("#yourTimes").html('Your upcoming times');
+              };
             });
           })
         };
@@ -85,80 +88,9 @@ $(document).ready(function(){
       
     });
 
-    return true;
-
-
-    //   var thisRoute = json.predictions.direction.prediction;
-    //   thisRoute.forEach(function(coming){
-    //     var predTime = parseInt(coming.seconds);
-    //     console.log(predTime)
-
-    //     var betterTime = moment.duration(predTime, 'seconds');
-    //     var hours = Math.floor(betterTime.asHours());
-    //     var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-
-    //     $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-    //     $("#yourTimes").html('Your upcoming times');
-
-    //   });
-    // });    
+return true;
 })
-
-  // $.get(ttcNextBus, function(xml){
-  //   json = $.xml2json(xml);
-  //   // stores names of stops
-  //   var stops = json.route.stop
-  //   // iterates over each stop and collects stopId
-  //   stops.forEach(function(stop, index){
-  //     $('#myStop').append("<option value='" + stop.stopId + "'>" + stop.title + "</option>");
-  //     $('#myStop').prop("selectedIndex", -1);
-  //   });
-  // });
-
-
-// $('#myStop').on('change', function(){      
-//   var stop_data = (whatsComing + this.value + routeTag)
-//   console.log(stop_data)
-//   $.get(stop_data, function(xml){
-//     json = $.xml2json(xml);
-
-//     var thisRoute = json.predictions.direction.prediction;
-//     thisRoute.forEach(function(coming){
-//       var predTime = parseInt(coming.seconds);
-//       console.log(predTime)
-
-//       var betterTime = moment.duration(predTime, 'seconds');
-//       var hours = Math.floor(betterTime.asHours());
-//       var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-
-//       $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-//       $("#yourTimes").html('Your upcoming times');
-
-//     });
-
-
-  // });
 });
-
-
-// });
-
-
-// var currentStatus = chrome.extension.getBackgroundPage().open;
-// if (currentStatus==0) {
-//   chrome.extension.getBackgroundPage().open=1;
-// } else {
-//   chrome.extension.getBackgroundPage().open=0;
-//   window.close();
-// };
-
-
-
-
-
-
-
-
 
 // TODO   
 // convert predicted times to look good
