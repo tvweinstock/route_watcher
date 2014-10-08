@@ -1,14 +1,22 @@
-
 var routesBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
 var directionsBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r="
 var stopBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
 
+function timeConvert(coming){
+  var predTime = parseInt(coming.seconds);
+  var betterTime = moment.duration(predTime, 'seconds');
+  var hours = Math.floor(betterTime.asHours());
+  var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+  $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+  $("#yourTimes").html('Your upcoming times:');
+};
+
 
 $(document).ready(function(){
-var routes,
-    currentRouteTag,
-    directions,
-    routeStops;
+  var routes,
+  currentRouteTag,
+  directions,
+  routeStops;
 
   // Get routes
   $.get(routesBaseUrl, function(xml){
@@ -69,20 +77,17 @@ var routes,
             return;
           } 
           var estimateTime = response.predictions.direction.prediction;
-          
-          estimateTime.forEach(function(coming){
-            var predTime = parseInt(coming.seconds);
-            var betterTime = moment.duration(predTime, 'seconds');
-            var hours = Math.floor(betterTime.asHours());
-            var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-            $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
-            $("#yourTimes").html('Your upcoming times:');
+          if (!estimateTime.Array) {timeConvert(estimateTime) 
+          } else {}
+          estimateTime.forEach(function(expectedBus){
+            timeConvert(expectedBus);
           });
+
         })
       };
     });
 
-  });
+});
 
 return true;
 
