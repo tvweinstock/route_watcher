@@ -76,20 +76,24 @@ $(document).ready(function(){
             $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
             return;
           } 
+          // else if response.predictions.direction.length > 1 {
+          // //   timeConvert(response.predictions.direction[0]);
+          // // }
           var estimateTime = response.predictions.direction.prediction;
-          if (!estimateTime.Array) {timeConvert(estimateTime) 
-          } else {}
-          estimateTime.forEach(function(expectedBus){
-            timeConvert(expectedBus);
-          });
-
-        })
+          // if (!estimateTime.Array) {
+          //   timeConvert(estimateTime) 
+          // } else {
+            estimateTime.forEach(function(expectedBus){
+              timeConvert(expectedBus);
+            });
+          // };
+        });
       };
     });
 
-});
+  });
 
-return true;
+  return true;
 
 });
 
