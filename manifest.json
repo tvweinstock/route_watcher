@@ -14,14 +14,15 @@
     //   } ],
 
     "background": {
-      "scripts": ["js/eventPage.js"],
+      "scripts": ["js/background.js"],
       "persistent": true
       },
 
       "options_page": "options.html",
 
       "permissions": [
-      "tabs"
+      "tabs",
+      "storage"
       // geolocation
       ]
     }

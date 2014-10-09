@@ -1,6 +1,6 @@
 var routesBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
 
-// Saves options to chrome.storage
+// give user full list of vehicles to select
 
 $.get(routesBaseUrl, function(xml){
   var response = $.xml2json(xml);
@@ -11,17 +11,21 @@ $.get(routesBaseUrl, function(xml){
   });
 });
 
+// Saves options to chrome.storage
 function save_options() {
-  var userRoute = $('#myRoute').value;
-  chrome.storage.sync.set({
-    selectedRoute: userRoute
-  }, function () {
-    var status = $('#status');
-    status.textContent = "Options saved.";
-    setTimeout(function(){
-      status.textContent = '';
-    }, 1000);
-  }
-  )
+  var route = document.getElementById('myRoute').value;
   
+  chrome.storage.sync.set({
+    favoriteRoute: route,
+    
+  }, function() {
+    // Update status to let user know options were saved.
+    var status = document.getElementById('status');
+    status.textContent = 'Options saved.';
+    setTimeout(function() {
+      status.textContent = '';
+    }, 750);
+  });
 }
+
+document.getElementById('save').addEventListener('click', save_options);
