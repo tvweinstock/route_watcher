@@ -13,16 +13,16 @@
     //   "run_at" : "document_start"
     //   } ],
 
-    "background": {
-      "scripts": ["js/background.js"],
-      "persistent": true
-      },
+    // "background": {
+    //   "scripts": ["js/background.js"],
+    //   "persistent": true
+    //   },
 
       "options_page": "options.html",
 
       "permissions": [
-      "tabs",
       "storage"
+      // "background"
       // geolocation
       ]
     }

@@ -11,6 +11,7 @@ $.get(routesBaseUrl, function(xml){
   });
 });
 
+
 // Saves options to chrome.storage
 function save_options() {
   var route = document.getElementById('myRoute').value;
