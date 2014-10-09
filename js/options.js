@@ -25,7 +25,3 @@ function save_options() {
   )
   
 }
-
-function update () {
-
-}
