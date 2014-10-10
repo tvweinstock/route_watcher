@@ -18,6 +18,7 @@ $(document).ready(function(){
       $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
       $('#myRoute').prop("selectedIndex", -1);
     });
+    restore_options;
   });
 
   // Manage change of route

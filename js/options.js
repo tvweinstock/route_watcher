@@ -1,5 +1,6 @@
 var routesBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
-
+var directionsBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r="
+var stopBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
 // give user full list of vehicles to select
 
 $.get(routesBaseUrl, function(xml){
@@ -9,16 +10,61 @@ $.get(routesBaseUrl, function(xml){
     $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
     $('#myRoute').prop("selectedIndex", -1);
   });
+  
 });
 
+$('#myRoute').on('change', function(){
+  $('#myDirection').html("");
+  $('#myStop').html("");
+  currentRouteTag = this.value;
+  var directionsUrl = (directionsBaseUrl + this.value);
+  $.get(directionsUrl, function(xml){
+    var response = $.xml2json(xml);
+    directions = response.route.direction;
+    routeStops = response.route.stop;
+    directions.forEach(function(direction, index){
+      $('#myDirection').append("<option value='" + direction.tag + "'>" + direction.title + "</option>");
+      $('#myDirection').prop("selectedIndex", -1);
+    });
+  });
+});
+
+$('#myDirection').on('change', function(){
+  $('#myStop').html("");
+  var stops = [];
+  var menuValue = this.value;
+  if (!directions) return;
+  directions.forEach(function(direction) {
+    if (direction.tag == menuValue) {
+      routeStops.forEach(function(stop) {
+        stops.push(stop);
+      });
+    } 
+  });
+
+  stops.forEach(function(stop, index){
+    if (stop.tag.indexOf('_ar') == -1) {
+      $('#myStop').append("<option value='" + stop.tag + "'>" + stop.title + "</option>");
+      $('#myStop').prop("selectedIndex", -1);
+    } else {
+      return;
+    }
+  });
+  
+});  
 
 // Saves options to chrome.storage
 function save_options() {
   var route = document.getElementById('myRoute').value;
+  var direction = document.getElementById('myDirection').value;
+  var stop = document.getElementById('myStop').value;
+  
   
   chrome.storage.sync.set({
     favoriteRoute: route,
-    
+    favoriteDirection: direction,
+    favoriteStop: stop
+
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -29,4 +75,17 @@ function save_options() {
   });
 }
 
+function restore_options() {
+  chrome.storage.sync.get({
+    favoriteRoute: '5',
+    favoriteDirection: '5_0_5B',
+    favoriteStop: '14189'
+  }, function(items) {
+    document.getElementById('myRoute').value = items.favoriteRoute;
+    document.getElementById('myDirection').value = items.favoriteDirection;    
+    document.getElementById('myStop').value = items.favoriteStop;
+  });
+}
+restore_options();
+// document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);

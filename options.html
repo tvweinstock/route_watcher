@@ -7,14 +7,43 @@
 <body>
   <h1>Customize Your Ride</h1>
 
+
   <h2>Your favourite routes</h2>
-   
-    <label for="direction-names">Your Route</label>
-    <select name="transit" id="myRoute">
-    </select> 
-    
-    <div id="status"></div>
-    <button id="save">Save</button>
+
+  <label for="route-names">Your Route</label>
+  <select name="transit" id="myRoute">
+  </select> 
+
+  <label for="direction-names">Your Direction</label>
+  <select name="transit" id="myDirection">
+  </select> 
+
+  <label for="stop-names">Your Stop</label>
+  <select name="stops" id="myStop">
+  </select>
+
+  <div id="status"></div>
+  <button id="save">Save</button>
+
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      min-width: 357px;
+      overflow-x: hidden;
+    }
+
+    #upcoming {
+      list-style: none;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+    }
+
+    #upcoming li:first-child {
+      font-size: 40px;
+    }
+
+  </style>
+
 
 
   <script src="js/jquery.js"></script>
