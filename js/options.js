@@ -10,7 +10,7 @@ $.get(routesBaseUrl, function(xml){
     $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
     $('#myRoute').prop("selectedIndex", -1);
   });
-  
+  //restore_options();
 });
 
 $('#myRoute').on('change', function(){
@@ -57,14 +57,13 @@ $('#myDirection').on('change', function(){
 function save_options() {
   var route = document.getElementById('myRoute').value;
   var direction = document.getElementById('myDirection').value;
-  var stop = document.getElementById('myStop').value;
-  
+  var stop = $('#myStop option:selected');
   
   chrome.storage.sync.set({
-    favoriteRoute: route,
-    favoriteDirection: direction,
-    favoriteStop: stop
-
+    favoriteStop: {
+      id: stop.attr("value"),
+      name: stop.text()
+    }
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -72,8 +71,18 @@ function save_options() {
     setTimeout(function() {
       status.textContent = '';
     }, 750);
+    display_options();
   });
 }
+
+function display_options() {
+  chrome.storage.sync.get('favoriteStop',function(stops) {
+    $.each(stops, function(index, stop) {
+      $('#favourites-list').append(stop.name + "<br/>");  
+    });
+  });
+}
+
 
 function restore_options() {
   chrome.storage.sync.get({
@@ -86,6 +95,9 @@ function restore_options() {
     document.getElementById('myStop').value = items.favoriteStop;
   });
 }
-restore_options();
+
 // document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click', save_options);
+// document.getElementById('save').addEventListener('click', save_options);
+$(document).ready(function() {
+  display_options();  
+});

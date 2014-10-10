@@ -10,6 +10,16 @@ $(document).ready(function(){
   directions,
   routeStops;
 
+  function display_options() {
+    chrome.storage.sync.get('favoriteStop',function(stops) {
+      $.each(stops, function(index, stop) {
+        $('#favourites-list').append(stop.name + "<br/>");  
+      });
+    });
+  }
+
+  display_options();  
+
   // Get routes
   $.get(routesBaseUrl, function(xml){
     var response = $.xml2json(xml);
@@ -18,7 +28,7 @@ $(document).ready(function(){
       $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
       $('#myRoute').prop("selectedIndex", -1);
     });
-    restore_options;
+    //restore_options;
   });
 
   // Manage change of route
