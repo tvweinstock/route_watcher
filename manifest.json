@@ -1,5 +1,6 @@
 {
   "name": "bapt",
+  "icons": {"128":"train128.png"}, 
   "permissions": [
     "storage"
   ],
@@ -8,8 +9,8 @@
   "version": "0.0.1",
 
   "browser_action": {
-    "default_icon": "train.png",
-    "default_popup": "index.html"
+    "default_icon": "images/train.png",
+    "default_popup": "images/index.html"
   },
     // "content_scripts": [ {
     //   "js": [ "jquery.min.js", "js/eventPage.js" ],

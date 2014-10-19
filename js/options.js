@@ -1,7 +1,6 @@
 var routesBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
 var directionsBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r="
 var stopBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
-// give user full list of vehicles to select
 
 $.get(routesBaseUrl, function(xml){
   var response = $.xml2json(xml);
@@ -10,7 +9,6 @@ $.get(routesBaseUrl, function(xml){
     $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
     $('#myRoute').prop("selectedIndex", -1);
   });
-  //restore_options();
 });
 
 $('#myRoute').on('change', function(){
@@ -50,15 +48,11 @@ $('#myDirection').on('change', function(){
       return;
     }
   });
-  
-});  
+});
 
 // Saves options to chrome.storage
 function save_options() {
-  var route = document.getElementById('myRoute').value;
-  var direction = document.getElementById('myDirection').value;
   var stop = $('#myStop option:selected');
-  
   chrome.storage.sync.set({
     favoriteStop: {
       id: stop.attr("value"),
@@ -78,7 +72,8 @@ function save_options() {
 function display_options() {
   chrome.storage.sync.get('favoriteStop',function(stops) {
     $.each(stops, function(index, stop) {
-      $('#favourites-list').append(stop.name + "<br/>");  
+      $('#favouritesList').append(stop.name + "<br/>");
+      
     });
   });
 }
@@ -97,7 +92,7 @@ function restore_options() {
 }
 
 // document.addEventListener('DOMContentLoaded', restore_options);
-// document.getElementById('save').addEventListener('click', save_options);
+document.getElementById('save').addEventListener('click', save_options);
 $(document).ready(function() {
   display_options();  
 });

@@ -1,36 +1,38 @@
 <!doctype html>
 <html>
 <head>
-  <title>Better Arrivals Public Transit || Civilized public commuting</title>
+  <title>Better Arrivals Public Transit || Civilized Public Commuting</title>
   <link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link href='stylesheets/style.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
   <div id="body">
 
     <h2>My Favourites</h2>
-    <div id="favourites-list"></div>
+    <div id="favouritesList"></div>
+    <ul id="favouriteTimes"></ul>
 
     <div id="title">
       <h2>Track your transit</h2>
       <p id="route"></p>
     </div>
 
-    <form action="route-selection">      
-      <label for="route-names">Your Route</label>
+    <form action="#">      
+      <label class="custom-select" for="route-names">Your Route</label>
       <select name="transit" id="myRoute">
       </select> 
     </form>
 
-    <form action="direction-selection">
-      <label for="direction-names">Your Direction</label>
+    <form action="#">
+      <label class="custom-select" for="direction-names">Your Direction</label>
       <select name="transit" id="myDirection">
       </select> 
     </form>
 
-    <form action="stop-selection">
-      <label for="stop-names">Your Stop</label>
+    <form action="#">
+      <label class="custom-select" for="stop-names">Your Stop</label>
       <select name="stops" id="myStop">
       </select>
     </form>
@@ -40,33 +42,9 @@
     <ul id="upcoming"></ul>
   </div>
 
-
-
-
-  <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-      min-width: 357px;
-      overflow-x: hidden;
-      text-align: center;
-    }
-
-    #upcoming {
-      list-style: none;
-      font-family: 'Orbitron', sans-serif;
-      text-align: center;
-    }
-
-    #upcoming li:first-child {
-      font-size: 40px;
-    }
-
-  </style>
-
   <script src="js/jquery.js"></script>
   <script src="js/jquery.xml2json.js"></script>
   <script src="js/moment.js"></script>
-
   <script src="js/eventPage.js"></script>
 </body>
 </html>

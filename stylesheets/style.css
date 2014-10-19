@@ -1,0 +1,26 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  min-width: 357px;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+#upcoming {
+  list-style: none;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+}
+
+#upcoming li:first-child {
+  font-size: 40px;
+}
+
+label .custom-select {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-select select {
+  display: inline-block;
+  border: 2px solid #bbb;
+}

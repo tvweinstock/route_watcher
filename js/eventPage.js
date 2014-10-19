@@ -13,7 +13,8 @@ $(document).ready(function(){
   function display_options() {
     chrome.storage.sync.get('favoriteStop',function(stops) {
       $.each(stops, function(index, stop) {
-        $('#favourites-list').append(stop.name + "<br/>");  
+        $('#favouritesList').append(stop.name + "<br/>");  
+        console.log(stopTag)
       });
     });
   }
@@ -90,7 +91,7 @@ $(document).ready(function(){
             var betterTime = moment.duration(predTime, 'seconds');
             var hours = Math.floor(betterTime.asHours());
             var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-            $("#upcoming").append('<li>' + ("h: " + hours + " m: " + mins) + '</li>');
+            $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
             $('#routeDirections').html(directions.title);
             $("#yourTimes").html('Your upcoming times:');
           };
@@ -100,7 +101,6 @@ $(document).ready(function(){
             direction.prediction.forEach(function(prediction){
               timeConvert(prediction, direction.title);
             });
-            console.log(direction.title);
           });
         });
 };
