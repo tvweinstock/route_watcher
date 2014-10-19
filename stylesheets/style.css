@@ -1,8 +1,21 @@
-body {
-  font-family: 'Open Sans', sans-serif;
-  min-width: 357px;
-  overflow-x: hidden;
-  text-align: center;
+.styled-select select {
+  background: transparent;
+  width: 350px;
+  padding: 5px;
+  font-size: 10px;
+  line-height: 1;
+  border: 0;
+  border-radius: 3px;
+  height: 34px;
+  -webkit-appearance: none;
+}
+
+.styled-select {
+  width: 350px;
+  height: 34px;
+  overflow: hidden;
+  background: url('/stylesheets/select-arrow.png') no-repeat right #ddd;
+  border: 1px solid #ccc;
 }
 
 #upcoming {
@@ -15,12 +28,6 @@ body {
   font-size: 40px;
 }
 
-label .custom-select {
-  position: relative;
-  display: inline-block;
-}
-
-.custom-select select {
-  display: inline-block;
-  border: 2px solid #bbb;
+#status {
+  padding-top: 20px;
 }

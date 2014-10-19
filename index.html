@@ -19,28 +19,70 @@
       <p id="route"></p>
     </div>
 
-    <form action="#">      
-      <label class="custom-select" for="route-names">Your Route</label>
-      <select name="transit" id="myRoute">
-      </select> 
-    </form>
+    <form>     
+      <label for="route-names">Your Route</label>
+      <div class="styled-select">
+        <select name="transit" id="myRoute">
+        </select> 
+      </div>
 
-    <form action="#">
-      <label class="custom-select" for="direction-names">Your Direction</label>
-      <select name="transit" id="myDirection">
-      </select> 
-    </form>
+      <label for="direction-names">Your Direction</label>
+      <div class="styled-select">
+        <select name="transit" id="myDirection">
+        </select>
+      </div>
 
-    <form action="#">
-      <label class="custom-select" for="stop-names">Your Stop</label>
-      <select name="stops" id="myStop">
-      </select>
+      <label for="stop-names">Your Stop</label>
+      <div class="styled-select">
+        <select name="stops" id="myStop">
+        </select>
+      </div>
     </form>
 
     <h4 id="yourTimes"></h4>
     <p id="routeDirections"></p>
     <ul id="upcoming"></ul>
   </div>
+
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      min-width: 350px;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    #upcoming {
+      list-style: none;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+    }
+
+    #upcoming li:first-child {
+      font-size: 40px;
+    }
+
+    .styled-select select {
+      background: transparent;
+      width: 350px;
+      padding: 5px;
+      font-size: 10px;
+      line-height: 1;
+      border: 0;
+      border-radius: 3px;
+      height: 34px;
+      -webkit-appearance: none;
+    }
+
+    .styled-select {
+      width: 350px;
+      height: 34px;
+      overflow: hidden;
+      background: url(select-arrow.png) no-repeat right #ddd;
+      border: 1px solid #ccc;
+    }
+  </style>
+
 
   <script src="js/jquery.js"></script>
   <script src="js/jquery.xml2json.js"></script>

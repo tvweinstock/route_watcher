@@ -1,6 +1,6 @@
 {
   "name": "bapt",
-  "icons": {"128":"train128.png"}, 
+  "icons": {"128":"images/train128.png"}, 
   "permissions": [
     "storage"
   ],
@@ -10,17 +10,8 @@
 
   "browser_action": {
     "default_icon": "images/train.png",
-    "default_popup": "images/index.html"
+    "default_popup": "index.html"
   },
-    // "content_scripts": [ {
-    //   "js": [ "jquery.min.js", "js/eventPage.js" ],
-    //   "run_at" : "document_start"
-    //   } ],
-
-    // "background": {
-    //   "scripts": ["js/background.js"],
-    //   "persistent": true
-    //   },
 
   "options_page": "options.html"
 }
