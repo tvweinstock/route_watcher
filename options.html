@@ -5,7 +5,6 @@
   <title>bapt Options</title>
   <link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-  <link href='stylesheets/style.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <h1>Customize Your Ride</h1>
@@ -45,6 +44,40 @@
       font-family: 'Open Sans', sans-serif;
       min-width: 357px;
       overflow-x: hidden;
+    }
+
+    .styled-select select {
+      background: transparent;
+      width: 350px;
+      padding: 5px;
+      font-size: 15px;
+      line-height: 1;
+      border: 0;
+      border-radius: 3px;
+      height: 34px;
+      -webkit-appearance: none;
+    }
+
+    .styled-select {
+      width: 350px;
+      height: 34px;
+      overflow: hidden;
+      background: url('Images/select-arrow.png') no-repeat right #ddd;
+      border: 1px solid #ccc;
+    }
+
+    #upcoming {
+      list-style: none;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+    }
+
+    #upcoming li:first-child {
+      font-size: 40px;
+    }
+
+    #status {
+      padding-top: 20px;
     }
   </style>
 
