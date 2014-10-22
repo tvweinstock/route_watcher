@@ -60,7 +60,7 @@ function save_options() {
     }
   }, function() {
     // Update status to let user know options were saved.
-    var status = document.getElementById('status');
+    var status = $('#status');
     status.textContent = 'Options saved.';
     setTimeout(function() {
       status.textContent = '';
@@ -85,14 +85,15 @@ function restore_options() {
     favoriteDirection: '5_0_5B',
     favoriteStop: '14189'
   }, function(items) {
-    document.getElementById('myRoute').value = items.favoriteRoute;
-    document.getElementById('myDirection').value = items.favoriteDirection;    
-    document.getElementById('myStop').value = items.favoriteStop;
+    $('#myRoute').value = items.favoriteRoute;
+    $('#myDirection').value = items.favoriteDirection;    
+    $('#myStop').value = items.favoriteStop;
   });
 }
 
 // document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click', save_options);
+$('#save').addEventListener('click', save_options);
+
 $(document).ready(function() {
-  display_options();  
+  display_options(); 
 });

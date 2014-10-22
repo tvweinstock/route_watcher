@@ -19,7 +19,9 @@ $(document).ready(function(){
     });
   }
 
-  display_options();  
+  display_options();
+
+  // Show upcoming times for the favourited routes
 
   // Get routes
   $.get(routesBaseUrl, function(xml){
