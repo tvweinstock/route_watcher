@@ -10,18 +10,18 @@ $(document).ready(function(){
   directions,
   routeStops;
 
-  function display_options() {
+  function displayOptions() {
     chrome.storage.sync.get('favoriteStop',function(stops) {
       $.each(stops, function(index, stop) {
-        $('#favouritesList').append(stop.name + "<br/>");  
-        console.log(stopTag)
+        console.log(stops)
+        $('#favouritesList').append(stop.name + "<br/>");
       });
     });
   }
 
-  display_options();
+  displayOptions();
 
-  // Show upcoming times for the favourited routes
+  // Append upcoming times for the favourited routes into $('favouriteTimes')
 
   // Get routes
   $.get(routesBaseUrl, function(xml){
@@ -105,16 +105,10 @@ $(document).ready(function(){
             });
           });
         });
-};
-});
-
+      };
+  });
 });
 
 return true;
 
 });
-
-// TODO   
-// convert predicted times to look good
-// if a user picks a new bus remove the previous predicted times
-// var time = new Date(epochTime)

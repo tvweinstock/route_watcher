@@ -50,14 +50,16 @@ $('#myDirection').on('change', function(){
   });
 });
 
+
 // Saves options to chrome.storage
-function save_options() {
+function saveOptions() {
   var stop = $('#myStop option:selected');
   chrome.storage.sync.set({
     favoriteStop: {
       id: stop.attr("value"),
       name: stop.text()
     }
+    // use .each to get the 
   }, function() {
     // Update status to let user know options were saved.
     var status = $('#status');
@@ -65,11 +67,11 @@ function save_options() {
     setTimeout(function() {
       status.textContent = '';
     }, 750);
-    display_options();
+    displayOptions();
   });
 }
 
-function display_options() {
+function displayOptions() {
   chrome.storage.sync.get('favoriteStop',function(stops) {
     $.each(stops, function(index, stop) {
       $('#favouritesList').append(stop.name + "<br/>");
@@ -78,22 +80,8 @@ function display_options() {
   });
 }
 
-
-function restore_options() {
-  chrome.storage.sync.get({
-    favoriteRoute: '5',
-    favoriteDirection: '5_0_5B',
-    favoriteStop: '14189'
-  }, function(items) {
-    $('#myRoute').value = items.favoriteRoute;
-    $('#myDirection').value = items.favoriteDirection;    
-    $('#myStop').value = items.favoriteStop;
-  });
-}
-
-// document.addEventListener('DOMContentLoaded', restore_options);
-$('#save').addEventListener('click', save_options);
+document.getElementById('save').addEventListener('click', saveOptions);
 
 $(document).ready(function() {
-  display_options(); 
+  displayOptions(); 
 });
