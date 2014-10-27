@@ -50,17 +50,18 @@ $('#myDirection').on('change', function(){
   });
 });
 
+var favoriteStops = []
 
 // Saves options to chrome.storage
 function saveOptions() {
   var stop = $('#myStop option:selected');
-  var favoriteStops = []
-  
+  favoriteStops.push({
+    id: stop.attr("value"),
+    name: stop.text()
+  });
+  stop.removeAttr('selected');
   chrome.storage.sync.set({
-    favoriteStop: {
-      id: stop.attr("value"),
-      name: stop.text()
-    }
+    favoriteStops: favoriteStops
   }, function() {
     // Update status to let user know options were saved.
     var status = $('#status');
@@ -72,30 +73,32 @@ function saveOptions() {
   });
 };
 
-
-// function storeManyStops() {
-//   chrome.storage.sync.set ({
-//     chrome.storage.sync.get('favoriteStop', function(stops){
-//       var favoriteStops = $.map(stops, function (index, stop) {
-//         return[index];
-//       })
-//     })
-//   })
-// };
-
 function displayOptions() {
-  chrome.storage.sync.get('favoriteStop',function(stops) {
-    $.each(stops, function(index, stop) {
-      $('#favouritesList').append(stop.name + "<br/>");
+  $('#favorites-list').html('');
+  $.each(favoriteStops, function(index, stop) {
+    $('#favorites-list').append( "<p id='" + index + "'>" + stop.name + "</p>");
 
-    });
   });
-}
+};
 
 document.getElementById('save').addEventListener('click', saveOptions);
 
 $(document).ready(function() {
-  displayOptions(); 
+  chrome.storage.sync.get("favoriteStops", function(data){
+    favoriteStops = data.favoriteStops || [];
+    displayOptions(); 
+    
+  });
+  
 });
 
+// remove from favourite stops array & when array changes put it into stoage
 
+
+
+
+
+
+
+// to reset code in array
+// chrome.storage.sync.set({ favoriteStops: [] });
