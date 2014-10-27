@@ -20,9 +20,7 @@ $(document).ready(function(){
   }
 
   displayOptions();
-
-  // Append upcoming times for the favourited routes into $('favouriteTimes')
-
+  
   // Get routes
   $.get(routesBaseUrl, function(xml){
     var response = $.xml2json(xml);

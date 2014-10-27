@@ -49,14 +49,49 @@ $('#myDirection').on('change', function(){
     }
   });
 });
+$("#myStop").on("change", function(){
+  $("#upcoming").html("");
+  var stopMenuValue = this.value;
+  routeStops.forEach(function(stopTag){
+    if (stopTag.tag == stopMenuValue) {
+      var stopIdUrl = (stopBaseUrl + stopTag.stopId + "&routeTag=" + currentRouteTag);
+      $.get(stopIdUrl, function(xml){
+        var response = $.xml2json(xml, true);
+        if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
+          $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
+          return;
+        } 
+
+        function timeConvert(coming){
+          var predTime = parseInt(coming.seconds);
+          var betterTime = moment.duration(predTime, 'seconds');
+          var hours = Math.floor(betterTime.asHours());
+          var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+          $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
+          $('#routeDirections').html(directions.title);
+          $("#yourTimes").html('Your upcoming times:');
+        };
+        var directions = response.predictions[0].direction;
+
+        directions.forEach(function(direction){
+          direction.prediction.forEach(function(prediction){
+            timeConvert(prediction, direction.title);
+          });
+        });
+      });
+};
+});
+});
 
 var favoriteStops = []
 
 // Saves options to chrome.storage
 function saveOptions() {
+  var route = $('#myRoute option:selected');
   var stop = $('#myStop option:selected');
   favoriteStops.push({
-    id: stop.attr("value"),
+    routeTag: route.attr("value"),
+    stopTag: stop.attr("value"),
     name: stop.text()
   });
   stop.removeAttr('selected');
@@ -86,13 +121,20 @@ document.getElementById('save').addEventListener('click', saveOptions);
 $(document).ready(function() {
   chrome.storage.sync.get("favoriteStops", function(data){
     favoriteStops = data.favoriteStops || [];
-    displayOptions(); 
-    
+    displayOptions();
+
+    favoriteStops.forEach(function(favoriteStop, index) {
+      console.log(favoriteStop.routeTag)
+    });
   });
-  
+
+
 });
 
-// remove from favourite stops array & when array changes put it into stoage
+
+
+
+
 
 
 
