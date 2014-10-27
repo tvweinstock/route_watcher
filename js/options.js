@@ -61,32 +61,8 @@ $(document).ready(function() {
     routeStops.forEach(function(stopTag){
       if (stopTag.tag == stopMenuValue) {
         var stopIdUrl = (stopBaseUrl + stopTag.stopId + "&routeTag=" + currentRouteTag);
-        $.get(stopIdUrl, function(xml){
-          var response = $.xml2json(xml, true);
-          if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
-            $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
-            return;
-          } 
-
-          function timeConvert(coming){
-            var predTime = parseInt(coming.seconds);
-            var betterTime = moment.duration(predTime, 'seconds');
-            var hours = Math.floor(betterTime.asHours());
-            var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-            $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
-            $('#routeDirections').html(directions.title);
-            $("#yourTimes").html('Your upcoming times:');
-          };
-          var directions = response.predictions[0].direction;
-
-          directions.forEach(function(direction){
-            direction.prediction.forEach(function(prediction){
-              timeConvert(prediction, direction.title);
-            });
-          });
-        });
-      };
-    $('#stop-url').html(stopIdUrl);
+        $('#stop-url').html(stopIdUrl);
+      };    
     });
   });
 
@@ -99,7 +75,7 @@ function saveOptions() {
   favoriteStops.push({
     routeTag: route.attr("value"),
     stopTag: stop.attr("value"),
-    stopUrl: stopIdUrl.text(),
+    stopIdUrl: stopIdUrl.text(),
     name: stop.text()
   });
   stop.removeAttr('selected');
@@ -119,9 +95,32 @@ function saveOptions() {
 function displayOptions() {
   $('#favorites-list').html('');
   $.each(favoriteStops, function(index, stop) {
-    $('#favorites-list').append( "<p id='" + index + "'>" + stop.name + "</p>");
+    
+    $.get(stop.stopIdUrl, function(xml){
+      var response = $.xml2json(xml, true);
+      if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
+        $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
+        return;
+      } 
+
+      function timeConvert(coming){
+        var predTime = parseInt(coming.seconds);
+        var betterTime = moment.duration(predTime, 'seconds');
+        var hours = Math.floor(betterTime.asHours());
+        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+        $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
+        $('#routeDirections').html(directions.title);
+      };
+      var directions = response.predictions[0].direction;
+
+      directions.forEach(function(direction){
+          $('#favorites-list').append( "<p id='" + index + "'>" + stop.name + "</p>");
+        direction.prediction.forEach(function(prediction){
+          timeConvert(prediction, direction.title);
+        });
+      });
+    });
   });
-  debugger
 };
 
 document.getElementById('save').addEventListener('click', saveOptions);
