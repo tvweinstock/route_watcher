@@ -7,7 +7,7 @@
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <h1>Customize Your Ride</h1>
+  <h1>Route Voyeur</h1>
 
 
   <h2>Your favourite routes</h2>
@@ -35,11 +35,9 @@
   <div id="status"></div>
   <button id="save">Add to Favourites</button>
 
-  <p id="stop-url"></p>
-
   <h2>My Favourites</h2>
   <div id="favorites-list"></div>
-
+  <div id="no-prediction"></div>
   <ul id="upcoming"></ul>
 
 
@@ -73,12 +71,13 @@
     #upcoming {
       list-style: none;
       font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
     }
 
-    #upcoming li:first-child {
+/*    #upcoming li:first-child {
       font-size: 40px;
     }
-
+*/
     #status {
       padding-top: 20px;
     }

@@ -8,20 +8,9 @@ $(document).ready(function(){
   var routes,
   currentRouteTag,
   directions,
-  routeStops;
+  stopIdUrl,
+  favoriteStops = []
 
-  function displayOptions() {
-    chrome.storage.sync.get('favoriteStop',function(stops) {
-      $.each(stops, function(index, stop) {
-        console.log(stops)
-        $('#favouritesList').append(stop.name + "<br/>");
-      });
-    });
-  }
-
-  displayOptions();
-  
-  // Get routes
   $.get(routesBaseUrl, function(xml){
     var response = $.xml2json(xml);
     routes = response.route
@@ -29,10 +18,8 @@ $(document).ready(function(){
       $('#myRoute').append("<option value='" + route.tag + "'>" + route.title + "</option>");
       $('#myRoute').prop("selectedIndex", -1);
     });
-    //restore_options;
   });
 
-  // Manage change of route
   $('#myRoute').on('change', function(){
     $('#myDirection').html("");
     $('#myStop').html("");
@@ -47,7 +34,6 @@ $(document).ready(function(){
         $('#myDirection').append("<option value='" + direction.tag + "'>" + direction.title + "</option>");
         $('#myDirection').prop("selectedIndex", -1);
       });
-
     });    
   })  
 
@@ -82,7 +68,7 @@ $(document).ready(function(){
         $.get(stopIdUrl, function(xml){
           var response = $.xml2json(xml, true);
           if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
-            $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
+            $("#no-prediction").html("Nothing's coming..now. Please check back soon!!");
             return;
           } 
 
@@ -93,7 +79,7 @@ $(document).ready(function(){
             var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
             $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
             $('#routeDirections').html(directions.title);
-            $("#yourTimes").html('Your upcoming times:');
+            $("#your-times").html('Your upcoming times:');
           };
           var directions = response.predictions[0].direction;
 

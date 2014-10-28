@@ -6,7 +6,9 @@ $(document).ready(function() {
   var routes,
   currentRouteTag,
   directions,
-  routeStops;
+  routeStops,
+  stopIdUrl,
+  favoriteStops = []
 
   $.get(routesBaseUrl, function(xml){
     var response = $.xml2json(xml);
@@ -60,28 +62,27 @@ $(document).ready(function() {
     var stopMenuValue = this.value;
     routeStops.forEach(function(stopTag){
       if (stopTag.tag == stopMenuValue) {
-        var stopIdUrl = (stopBaseUrl + stopTag.stopId + "&routeTag=" + currentRouteTag);
-        $('#stop-url').html(stopIdUrl);
+        stopIdUrl = (stopBaseUrl + stopTag.stopId + "&routeTag=" + currentRouteTag);        
       };    
     });
   });
 
-var favoriteStops = []
+  
 
-function saveOptions() {
-  var route = $('#myRoute option:selected');
-  var stop = $('#myStop option:selected');
-  var stopIdUrl = $('#stop-url');
-  favoriteStops.push({
-    routeTag: route.attr("value"),
-    stopTag: stop.attr("value"),
-    stopIdUrl: stopIdUrl.text(),
-    name: stop.text()
-  });
-  stop.removeAttr('selected');
-  chrome.storage.sync.set({
-    favoriteStops: favoriteStops
-  }, function() {
+  function saveOptions() {
+    var route = $('#myRoute option:selected');
+    var stop = $('#myStop option:selected');
+    stopIdUrl = stopIdUrl
+    favoriteStops.push({
+      routeTag: route.attr("value"),
+      stopTag: stop.attr("value"),
+      stopIdUrl: stopIdUrl,
+      name: stop.text()
+    });
+    stop.removeAttr('selected');
+    chrome.storage.sync.set({
+      favoriteStops: favoriteStops
+    }, function() {
         // Update status to let user know options were saved.
         var status = $('#status');
         status.textContent = 'Options saved.';
@@ -90,38 +91,36 @@ function saveOptions() {
         }, 750);
         displayOptions();
       });
-};
+  };
 
-function displayOptions() {
-  $('#favorites-list').html('');
-  $.each(favoriteStops, function(index, stop) {
-    
-    $.get(stop.stopIdUrl, function(xml){
-      var response = $.xml2json(xml, true);
-      if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
-        $("#yourTimes").html("Nothing's coming..now. Please check back soon!!");
-        return;
-      } 
+  function displayOptions() {
+    $('#favorites-list').html('');
+    $.each(favoriteStops, function(index, stop) {
 
-      function timeConvert(coming){
-        var predTime = parseInt(coming.seconds);
-        var betterTime = moment.duration(predTime, 'seconds');
-        var hours = Math.floor(betterTime.asHours());
-        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-        $("#upcoming").append('<li>' + (hours + " m: " + mins) + '</li>');
-        $('#routeDirections').html(directions.title);
-      };
-      var directions = response.predictions[0].direction;
+      $.get(stop.stopIdUrl, function(xml){
+        var response = $.xml2json(xml, true);
+        if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
+          $("#no-prediction").html(stop.name + " - Nothing's coming..now. Please check back soon!!");
+          return;
+        } 
 
-      directions.forEach(function(direction){
-          $('#favorites-list').append( "<p id='" + index + "'>" + stop.name + "</p>");
-        direction.prediction.forEach(function(prediction){
-          timeConvert(prediction, direction.title);
+        function showTime(coming, name){
+          var predTime = parseInt(coming.seconds);
+          var betterTime = moment.duration(predTime, 'seconds');
+          var hours = Math.floor(betterTime.asHours());
+          var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+          $("#upcoming").append('<li>' + stop.name + " " + hours + " m: " + mins + '</li>');
+        };
+        var directions = response.predictions[0].direction;
+
+        directions.forEach(function(direction){
+          direction.prediction.forEach(function(prediction){
+            showTime(prediction, direction.title);
+          });
         });
       });
     });
-  });
-};
+  };
 
 document.getElementById('save').addEventListener('click', saveOptions);
 
@@ -129,9 +128,6 @@ chrome.storage.sync.get("favoriteStops", function(data){
   favoriteStops = data.favoriteStops || [];
   displayOptions();
 
-  favoriteStops.forEach(function(favoriteStop, index) {
-
-  });
 });
 
 
