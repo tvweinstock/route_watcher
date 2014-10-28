@@ -89,10 +89,73 @@ $(document).ready(function(){
             });
           });
         });
-      };
-  });
+};
+});
 });
 
 return true;
+
+
+function saveOptions() {
+  var route = $('#myRoute option:selected');
+  var stop = $('#myStop option:selected');
+  stopIdUrl = stopIdUrl
+  favoriteStops.push({
+    routeTag: route.attr("value"),
+    stopTag: stop.attr("value"),
+    stopIdUrl: stopIdUrl,
+    name: stop.text()
+  });
+  stop.removeAttr('selected');
+  chrome.storage.sync.set({
+    favoriteStops: favoriteStops
+  }, function() {
+      // Update status to let user know options were saved.
+      var status = $('#status');
+      status.textContent = 'Options saved.';
+      setTimeout(function() {
+        status.textContent = '';
+      }, 750);
+      displayOptions();
+    });
+};
+
+function displayOptions() {
+  console.log('display this');
+  $('#favorites-list').html('');
+  $.each(favoriteStops, function(index, stop) {
+
+    $.get(stop.stopIdUrl, function(xml){
+      var response = $.xml2json(xml, true);
+      if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
+        $("#no-prediction-stored").html(stop.name + " - Nothing's coming..now. Please check back soon!!");
+        return;
+      } 
+
+      function showTime(coming, name){
+        var predTime = parseInt(coming.seconds);
+        var betterTime = moment.duration(predTime, 'seconds');
+        var hours = Math.floor(betterTime.asHours());
+        var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
+        $("#stored-predictions").append('<li>' + stop.name + " - " + hours + " m: " + mins + '</li>');
+      };
+      var directions = response.predictions[0].direction;
+
+      directions.forEach(function(direction){
+        direction.prediction.forEach(function(prediction){
+          showTime(prediction, direction.title);
+        });
+      });
+    });
+  });
+};
+
+$('#save').addEventListener('click', saveOptions);
+chrome.storage.sync.get("favoriteStops", function(data){
+  favoriteStops = data.favoriteStops || [];
+  displayOptions();
+
+});
+
 
 });

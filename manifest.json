@@ -11,7 +11,7 @@
   "browser_action": {
     "default_icon": "images/train.png",
     "default_popup": "index.html"
-  },
+  }
 
-  "options_page": "options.html"
+  // "options_page": "options.html"
 }

@@ -68,7 +68,6 @@ $(document).ready(function() {
   });
 
   
-
   function saveOptions() {
     var route = $('#myRoute option:selected');
     var stop = $('#myStop option:selected');
@@ -109,7 +108,7 @@ $(document).ready(function() {
           var betterTime = moment.duration(predTime, 'seconds');
           var hours = Math.floor(betterTime.asHours());
           var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-          $("#upcoming").append('<li>' + stop.name + " " + hours + " m: " + mins + '</li>');
+          $("#upcoming").append('<li>' + stop.name + " - " + hours + " m: " + mins + '</li>');
         };
         var directions = response.predictions[0].direction;
 
