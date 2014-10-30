@@ -3,6 +3,7 @@ var directionsBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?co
 var stopBaseUrl = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&stopId="
 
 $(document).ready(function() {
+  debugger
   var routes,
   currentRouteTag,
   directions,
@@ -67,7 +68,6 @@ $(document).ready(function() {
     });
   });
 
-  
   function saveOptions() {
     var route = $('#myRoute option:selected');
     var stop = $('#myStop option:selected');
@@ -93,33 +93,39 @@ $(document).ready(function() {
   };
 
   function displayOptions() {
-    $('#favorites-list').html('');
+    $('.upcoming-saved').html('');
     $.each(favoriteStops, function(index, stop) {
 
       $.get(stop.stopIdUrl, function(xml){
         var response = $.xml2json(xml, true);
         if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
-          $("#no-prediction").html(stop.name + " - Nothing's coming..now. Please check back soon!!");
+          $("#no-prediction-saved").html(stop.name + " - Nothing's coming..now. Please check back soon!!");
           return;
         } 
 
-        function showTime(coming, name){
+        function showTime(coming, element){
           var predTime = parseInt(coming.seconds);
           var betterTime = moment.duration(predTime, 'seconds');
           var hours = Math.floor(betterTime.asHours());
           var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-          $("#upcoming").append('<li>' + stop.name + " - " + hours + " m: " + mins + '</li>');
+          element.append("<span>" + hours + " m: " + mins + '</span>');
+
         };
         var directions = response.predictions[0].direction;
-
+        console.log(directions)
+        var groupedStopTimes = [];
         directions.forEach(function(direction){
+          
+          var stopElement = $('<li>' + direction.title + '</li>');
           direction.prediction.forEach(function(prediction){
-            showTime(prediction, direction.title);
+
+            showTime(prediction, stopElement);
           });
+          $('.upcoming-saved').append(stopElement);
         });
       });
-    });
-  };
+  });
+};
 
 document.getElementById('save').addEventListener('click', saveOptions);
 

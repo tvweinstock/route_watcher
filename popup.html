@@ -9,23 +9,25 @@
 <body>
   <h1>Route Voyeur</h1>
 
-
-  <h2>Your favourite routes</h2>
+  <h2>My Stops</h2>
+  <div id="favorites-list"></div>
+  <div id="no-prediction-saved"></div>
+  <ul class="upcoming-saved"></ul>
 
   <form>     
-    <label for="route-names">Your Route</label>
+    <label for="route-names">Route</label>
     <div class="styled-select">
       <select name="transit" id="myRoute">
       </select> 
     </div>
 
-    <label for="direction-names">Your Direction</label>
+    <label for="direction-names">Direction</label>
     <div class="styled-select">
       <select name="transit" id="myDirection">
       </select>
     </div>
 
-    <label for="stop-names">Your Stop</label>
+    <label for="stop-names">Stop</label>
     <div class="styled-select">
       <select name="stops" id="myStop">
       </select>
@@ -33,12 +35,8 @@
   </form>
 
   <div id="status"></div>
-  <button id="save">Add to Favourites</button>
+  <button id="save">Add to My Stops</button>
 
-  <h2>My Favourites</h2>
-  <div id="favorites-list"></div>
-  <div id="no-prediction"></div>
-  <ul id="upcoming"></ul>
 
 
   <style>
@@ -46,6 +44,14 @@
       font-family: 'Open Sans', sans-serif;
       min-width: 357px;
       overflow-x: hidden;
+    }
+
+    h2 {
+      margin-left: 40px;
+    }
+
+    label {
+      text-align: center;
     }
 
     .styled-select select {
@@ -68,10 +74,13 @@
       border: 1px solid #ccc;
     }
 
-    #upcoming {
-      list-style: none;
+    .futuristic-font {
       font-family: 'Orbitron', sans-serif;
-      font-size: 14px;
+      font-size: 12px;
+    }
+
+    .upcoming-saved {
+      list-style: none;
     }
 
     #status {
