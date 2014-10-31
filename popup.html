@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Route Voyeur Options</title>
-  <link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <h1>Route Voyeur</h1>
+  <div class="my-stops-wrapper">
+    <h1>Route Voyeur</h1>
 
-  <h2>My Stops</h2>
-  <div id="favorites-list"></div>
-  <div id="no-prediction-saved"></div>
-  <ul class="upcoming-saved"></ul>
+    <h2>My Stops</h2>
+    <div id="favorites-list"></div>
+    <div id="no-prediction-saved"></div>
+    <ul class="upcoming-saved"></ul>
+
+  </div>
 
   <form>     
     <label for="route-names">Route</label>
@@ -46,12 +48,12 @@
       overflow-x: hidden;
     }
 
-    h2 {
-      margin-left: 40px;
+    h1, h2 {
+      text-align: center;
     }
 
-    label {
-      text-align: center;
+    .clock-font {
+      font-size: 16px;
     }
 
     .styled-select select {
@@ -81,6 +83,8 @@
 
     .upcoming-saved {
       list-style: none;
+      text-align: center;
+      width: 78%;
     }
 
     #status {

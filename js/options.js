@@ -82,7 +82,6 @@ $(document).ready(function() {
     chrome.storage.sync.set({
       favoriteStops: favoriteStops
     }, function() {
-        // Update status to let user know options were saved.
         var status = $('#status');
         status.textContent = 'Options saved.';
         setTimeout(function() {
@@ -108,17 +107,18 @@ $(document).ready(function() {
           var betterTime = moment.duration(predTime, 'seconds');
           var hours = Math.floor(betterTime.asHours());
           var mins = Math.floor(betterTime.asMinutes()) - hours * 60;
-          element.append("<span>" + hours + " m: " + mins + '</span>');
+          element.append("<li class='clock-font'>" + hours + " m: " + mins + '</li>');
+          $('#myRoute').prop("selectedIndex", -1);
+          $('#myDirection').prop("selectedIndex", -1);
+          $('#myStop').prop("selectedIndex", -1);
 
         };
         var directions = response.predictions[0].direction;
-        console.log(directions)
         var groupedStopTimes = [];
         directions.forEach(function(direction){
           
-          var stopElement = $('<li>' + direction.title + '</li>');
+          var stopElement = $('<li>' + stop.name + '</li>');
           direction.prediction.forEach(function(prediction){
-
             showTime(prediction, stopElement);
           });
           $('.upcoming-saved').append(stopElement);
@@ -133,21 +133,10 @@ chrome.storage.sync.get("favoriteStops", function(data){
   favoriteStops = data.favoriteStops || [];
   displayOptions();
 
-});
+  });
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
 
 // to reset code in array
 // chrome.storage.sync.set({ favoriteStops: [] });
