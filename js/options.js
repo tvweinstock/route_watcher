@@ -82,26 +82,27 @@ $(document).ready(function() {
     chrome.storage.sync.set({
       favoriteStops: favoriteStops
     }, function() {
-        var status = $('#status');
-        status.textContent = 'Options saved.';
-        setTimeout(function() {
-          status.textContent = '';
-        }, 750);
-        displayOptions();
-      });
+      var status = $('#status');
+      status.textContent = 'Options saved.';
+      setTimeout(function() {
+        status.textContent = '';
+      }, 750);
+      displayOptions();
+    });
   };
 
   function displayOptions() {
     $('.upcoming-saved').html('');
     $.each(favoriteStops, function(index, stop) {
-
+      console.log(favoriteStops);
       $.get(stop.stopIdUrl, function(xml){
         var response = $.xml2json(xml, true);
-        if (!response.predictions || typeof response.predictions[0].direction === "undefined") {
-          $("#no-prediction-saved").html(stop.name + " - Nothing's coming..now. Please check back soon!!");
+        var noPredictionsNow = !response.predictions || typeof response.predictions[0].direction === "undefined"
+        if (noPredictionsNow) {
+          console.log(noPredictionsNow);
+          $(".no-prediction-saved").html("<li>" + stop.name + " - Nothing's coming..now. Please check back soon!!" + "</li>");
           return;
         } 
-
         function showTime(coming, element){
           var predTime = parseInt(coming.seconds);
           var betterTime = moment.duration(predTime, 'seconds');
@@ -111,20 +112,19 @@ $(document).ready(function() {
           $('#myRoute').prop("selectedIndex", -1);
           $('#myDirection').prop("selectedIndex", -1);
           $('#myStop').prop("selectedIndex", -1);
-
         };
         var directions = response.predictions[0].direction;
         var groupedStopTimes = [];
-        directions.forEach(function(direction){
-          
-          var stopElement = $('<li>' + stop.name + '</li>');
+        var stopElement = $('<li>' + stop.name + '</li>');
+        directions.forEach(function(direction){    
           direction.prediction.forEach(function(prediction){
             showTime(prediction, stopElement);
           });
+
           $('.upcoming-saved').append(stopElement);
         });
       });
-  });
+});
 };
 
 document.getElementById('save').addEventListener('click', saveOptions);
@@ -133,7 +133,7 @@ chrome.storage.sync.get("favoriteStops", function(data){
   favoriteStops = data.favoriteStops || [];
   displayOptions();
 
-  });
+});
 
 
 });

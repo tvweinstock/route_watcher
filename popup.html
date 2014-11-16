@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Route Voyeur Options</title>
+  <title>Route Watcher Options</title>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <div class="my-stops-wrapper">
-    <h1>Route Voyeur</h1>
+    <h1>Route Watcher</h1>
 
     <h2>My Stops</h2>
     <div id="favorites-list"></div>
-    <div id="no-prediction-saved"></div>
+    <ul class="no-prediction-saved"></ul>
     <ul class="upcoming-saved"></ul>
 
   </div>
@@ -76,12 +76,7 @@
       border: 1px solid #ccc;
     }
 
-    .futuristic-font {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
-    }
-
-    .upcoming-saved {
+    .upcoming-saved, .no-prediction-saved {
       list-style: none;
       text-align: center;
       width: 78%;
