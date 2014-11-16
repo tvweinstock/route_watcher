@@ -9,6 +9,7 @@ $(document).ready(function() {
   directions,
   routeStops,
   stopIdUrl,
+  noTime = [],
   favoriteStops = []
 
   $.get(routesBaseUrl, function(xml){
@@ -94,13 +95,18 @@ $(document).ready(function() {
   function displayOptions() {
     $('.upcoming-saved').html('');
     $.each(favoriteStops, function(index, stop) {
-      console.log(favoriteStops);
       $.get(stop.stopIdUrl, function(xml){
         var response = $.xml2json(xml, true);
+        console.log(response);
         var noPredictionsNow = !response.predictions || typeof response.predictions[0].direction === "undefined"
         if (noPredictionsNow) {
-          console.log(noPredictionsNow);
-          $(".no-prediction-saved").html("<li>" + stop.name + " - Nothing's coming..now. Please check back soon!!" + "</li>");
+          noTime.push(response);   
+          noTime.forEach(function(name){
+            name.predictions.forEach(function(stop, index){
+                console.log(stop.stopTitle);
+                $(".no-prediction-saved").html("<li>" + stop.stopTitle + " - Nothing's coming..now. Please check back soon!!" + "</li>");
+            })
+          })
           return;
         } 
         function showTime(coming, element){
@@ -116,7 +122,7 @@ $(document).ready(function() {
         var directions = response.predictions[0].direction;
         var groupedStopTimes = [];
         var stopElement = $('<li>' + stop.name + '</li>');
-        directions.forEach(function(direction){    
+        directions.forEach(function(direction){  
           direction.prediction.forEach(function(prediction){
             showTime(prediction, stopElement);
           });
@@ -132,9 +138,7 @@ document.getElementById('save').addEventListener('click', saveOptions);
 chrome.storage.sync.get("favoriteStops", function(data){
   favoriteStops = data.favoriteStops || [];
   displayOptions();
-
-});
-
+  });
 
 });
 

@@ -1,5 +1,5 @@
 {
-  "name": "Route Voyeur",
+  "name": "Route Watcher",
   "icons": {"128":"images/train128.png"}, 
   "permissions": [
     "storage"
